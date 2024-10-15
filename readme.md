@@ -10,6 +10,15 @@ The project explores dense retrieval techniques for natural language (NL) questi
 
 This project is built on the [Haystack](https://github.com/deepset-ai/haystack), an open source framework for building production-ready LLM applications, retrieval-augmented generative pipelines and state-of-the-art search systems that work intelligently over large document collections. 
 
+# Environment Setup
+
+To set up the environment, you can install the required dependencies by running the following command:
+
+```bash
+pip install -r requirements.txt
+# Datasets and Pre-Trained Models
+```
+
 # Datasets and Pre-Trained Models
 
 [Download Data and Pre-Trained Models](https://osf.io/k8d3q/?view_only=cc4610d536404db1912fb2a7fd79aed7)
