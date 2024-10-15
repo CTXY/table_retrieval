@@ -99,5 +99,3 @@ Notes
 	•	API Usage: Be mindful of API usage limits and associated costs.
 	•	Randomness: The script includes random elements in sampling and decision-making to enhance diversity in generated questions.
 	•	Error Handling: Errors and identical tables are logged for analysis. The script retries operations when possible.
-
-This readme provides a straightforward explanation of the script’s purpose and components, focusing on how it generates question-table pairs using an LLM while ensuring quality and uniqueness.
