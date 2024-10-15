@@ -68,28 +68,24 @@ Alternatively, you can create your own dataset. You will need to create a `train
 To store table data, you need to create a `tables.jsonl` file where each table is represented with the following fields:
 ```json
 {
-    "id": "str",  // Unique identifier for the table
-    "title": "str",  // Title of the table
-    "columns": [  // List of columns in the table
-        {"text": "str"},  // Column header
-        ...
+    "id": "str",  
+    "title": "str",  
+    "columns": [  
+        {"text": "str"}
     ],
-    "cells": [  // List of cells in the table
+    "cells": [  
         {
-            "text": "str",  // Cell content
-            "row_idx": "int",  // Row index of the cell
-            "col_idx": "int"  // Column index of the cell
+            "text": "str",  
+            "row_idx": "int", 
+            "col_idx": "int" 
         },
-        ...
     ],
-    "rows": {  // Optional: Row-wise structure of the table
+    "rows": { 
         "row_index": {
-            "cells": [  // Cells in the corresponding row
-                {"text": "str"},  // Cell content
-                ...
+            "cells": [ 
+                {"text": "str"},  
             ]
         },
-        ...
     }
 }
 
@@ -98,16 +94,15 @@ To store table data, you need to create a `tables.jsonl` file where each table i
 Your test data should be stored in a `test.jsonl` file with the following structure:
 ```json
 {
-    "id": "str",  // Unique identifier for the test instance
-    "question": "str",  // The question being asked
-    "table_id_lst": ["str"],  // List of table IDs relevant to the question
-    "answers": ["list of str"],  // List of correct answers
-    "ctxs": [  // Context tables related to the question (optional)
+    "id": "str", 
+    "question": "str", 
+    "table_id_lst": ["str"],
+    "answers": ["list of str"], 
+    "ctxs": [
         {
-            "title": "str",  // Title of the context
-            "text": "str"  // Text content of the context
+            "title": "str", 
+            "text": "str" 
         },
-        ...
     ]
 }
 ```
