@@ -16,7 +16,6 @@ To set up the environment, you can install the required dependencies by running 
 
 ```bash
 pip install -r requirements.txt
-# Datasets and Pre-Trained Models
 ```
 
 # Datasets and Pre-Trained Models
