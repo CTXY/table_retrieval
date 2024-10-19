@@ -29,7 +29,7 @@ class ContextLengthExceededError(Exception):
         self.response = response
 
 class GPTInference:
-    def __init__(self, api_key, model="gpt-3.5-turbo", host="vip.yi-zhan.top"):
+    def __init__(self, api_key, model="gpt-3.5-turbo", host="YOUR GPT SERVICE HOST"):
         self.api_key = api_key
         self.model = model
         self.host = host
@@ -404,7 +404,7 @@ def rewrite_question(api, question, synonyms):
         raise e  # Reraise to be caught in generate_question
 
 def main():
-    api_key = "sk-A0Hz9pZWo9kyvgxZ69E75984096b426f9c5f652c8937713b"  
+    api_key = "YOUR API KEY"  
     api = GPTInference(api_key)
     
     # File paths
