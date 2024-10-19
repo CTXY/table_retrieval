@@ -408,11 +408,11 @@ def main():
     api = GPTInference(api_key)
     
     # File paths
-    tables_file = '/home/yangchenyu/table_retrieval/datasets/nq_tables/tables.jsonl'
-    similar_tables_file = '/home/yangchenyu/table_retrieval/retrieval_results/jzy/query_generation/nq_tables/0_9_filtered_nq_tables_r3.jsonl'
-    output_file = '/home/yangchenyu/table_retrieval/retrieval_results/jzy/query_generation/nq_tables/generated_queries_r3_thres_0_9_5000.jsonl'
-    equality_log_file = '/home/yangchenyu/table_retrieval/retrieval_results/jzy/query_generation/nq_tables/equality_log_0_9_5000_r3.jsonl'
-    error_log_file = '/home/yangchenyu/table_retrieval/retrieval_results/jzy/query_generation/nq_tables/error_log_0_9_5000_r3.jsonl'  # New error log file
+    tables_file = 'YOUR TABLES FILE PATH'
+    similar_tables_file = 'SIMILAR TABLES FILE PATH'
+    output_file = 'OUTPUT FILE PATH'
+    equality_log_file = 'EQUAL TABLES LOG'
+    error_log_file = 'ERROR LOG FILE PATH'  # New error log file
 
     tables = read_tables_jsonl(tables_file)
     similar_tables = read_similar_tables(similar_tables_file)
