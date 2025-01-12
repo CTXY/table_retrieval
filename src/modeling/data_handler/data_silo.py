@@ -678,6 +678,118 @@ class DataSilo:
             # later or load from dicts instead of file
             self._load_data()
 
+    
+    # # Avoid negative sample are positive samples.
+    # def _get_dataset(self, filename: Optional[Union[str, Path]], dicts: Optional[List[Dict]] = None):
+    #     if not filename and not dicts:
+    #         raise ValueError("You must either supply `filename` or `dicts`")
+
+    #     # Loading dicts from file (default)
+    #     if dicts is None:
+    #         dicts = list(self.processor.file_to_dicts(filename))  # type: ignore
+    #         # Shuffle list of dicts here if we later want to have a random dev set split from train set
+    #         if str(self.processor.train_filename) in str(filename):
+    #             if not self.processor.dev_filename:
+    #                 if self.processor.dev_split > 0.0:
+    #                     random.shuffle(dicts)
+
+    #     datasets = []
+    #     problematic_ids_all = set()
+    #     batch_size = self.max_multiprocessing_chunksize
+
+    #     # Create a mapping of question to all samples that contain that question's positive contexts
+    #     question_to_positives = {}
+    #     for i, sample in enumerate(dicts):
+    #         question = sample['query']
+    #         if question not in question_to_positives:
+    #             question_to_positives[question] = set()
+    #         question_to_positives[question].update(ctx['passage_id'] for ctx in sample['passages'] if ctx['label'] == 'positive')
+    #         dicts[i]['idx'] = i
+
+    #     # Track samples for each passage_id to avoid conflicts later
+    #     passage_to_samples = {}
+    #     for i, sample in enumerate(dicts):
+    #         for ctx in sample['passages']:
+    #             passage_id = ctx['passage_id']
+    #             if passage_id not in passage_to_samples:
+    #                 passage_to_samples[passage_id] = set()
+    #             passage_to_samples[passage_id].add(i)
+
+    #     # Create a mapping of question to non-selected sample indices
+    #     question_to_non_selected_samples = {}
+    #     for question, positive_ids in question_to_positives.items():
+    #         non_selected_samples = set()
+    #         for passage_id in positive_ids:
+    #             non_selected_samples.update(passage_to_samples.get(passage_id, set()))
+    #         question_to_non_selected_samples[question] = non_selected_samples
+
+    #     # Function to generate batches
+    #     def batch_process():
+    #         batches = []
+    #         used_samples = set()  # Track indices of used samples across all batches
+    #         remaining_samples = {sample['idx']: sample for sample in dicts}  # Use dict for faster lookup
+
+    #         while remaining_samples:
+    #             current_batch = []
+    #             current_batch_indices = set()
+    #             current_batch_non_selected = set()
+
+    #             # Dynamically filter valid samples
+    #             valid_samples = {
+    #                 idx: sample
+    #                 for idx, sample in remaining_samples.items()
+    #                 if not current_batch_non_selected.intersection({idx})
+    #             }
+
+    #             while valid_samples and len(current_batch) < batch_size:
+    #                 # Pick the first valid sample
+    #                 idx, sample = next(iter(valid_samples.items()))
+
+    #                 question = sample['query']
+    #                 positive_ids = question_to_positives[question]
+    #                 non_selected_samples = question_to_non_selected_samples[question]
+
+    #                 # Ensure no overlap with current batch indices and respect non-selected constraints
+    #                 if not current_batch_indices.intersection(non_selected_samples):
+    #                     current_batch.append(sample)
+    #                     current_batch_indices.add(idx)
+    #                     current_batch_non_selected.update(non_selected_samples)
+
+    #                 # Remove the selected sample from remaining samples and update valid_samples
+    #                 remaining_samples.pop(idx)
+    #                 valid_samples = {
+    #                     idx: sample
+    #                     for idx, sample in remaining_samples.items()
+    #                     if idx not in current_batch_non_selected
+    #                 }
+
+    #             if current_batch:
+    #                 print("---------------------------------------------------")
+    #                 for item in current_batch:
+    #                     print(item['question'], item['positive_ctxs']['text']['id'])
+    #                 batches.append(current_batch)
+    #             else:
+    #                 break
+
+    #         return batches
+        
+    #     # Generate batches using the modified logic
+    #     batches = batch_process()
+
+    #     # Process each batch
+    #     for batch in tqdm(batches, desc="Preprocessing dataset", unit="batch"):
+    #         dataset, tensor_names, problematic_sample_ids = self.processor.dataset_from_dicts(
+    #             dicts=batch, indices=list(range(len(batch)))  # TODO remove indices
+    #         )
+    #         datasets.append(dataset)
+    #         problematic_ids_all.update(problematic_sample_ids)
+
+    #     self.processor.log_problematic(problematic_ids_all)
+    #     datasets = [d for d in datasets if d]
+
+    #     concat_datasets = ConcatDataset(datasets)  # type: Dataset
+    #     return concat_datasets, tensor_names
+
 
     def _get_dataset(self, filename: Optional[Union[str, Path]], dicts: Optional[List[Dict]] = None):
         if not filename and not dicts:

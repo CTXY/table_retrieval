@@ -1544,6 +1544,10 @@ class TextSimilarityProcessor(Processor):
                 all_ctx = []
                 ctx_inputs = {"input_ids": [], "token_type_ids": [], "attention_mask": [], 'row_ids': [], 'col_ids': []}
 
+                # if len(all_contexts) != 8:
+                #     print(len(hard_negative_context), len(positive_context))
+                #     print(positive_context)
+
                 for table in all_contexts:
                     table = table['text']
                     title = table['title'].strip() if 'title' in table else ''
@@ -1572,15 +1576,24 @@ class TextSimilarityProcessor(Processor):
                                 # Place the cell text in the correct location in the DataFrame
                                 table_df.iat[row_idx, col_idx] = cell_text
                         
-                        
-                        encoding = self.passage_tokenizer(
-                            table=table_df,
-                            queries=title,
-                            truncation="drop_rows_to_fit",
-                            padding="max_length",
-                            max_length=self.max_seq_len_passage,
-                            return_tensors="pt"
-                        )
+                        try:
+                            encoding = self.passage_tokenizer(
+                                table=table_df,
+                                queries=title,
+                                truncation="drop_rows_to_fit",
+                                padding="max_length",
+                                max_length=self.max_seq_len_passage,
+                                return_tensors="pt"
+                            )
+                        except Exception as e:
+                            encoding = self.passage_tokenizer(
+                                table=pd.DataFrame(),
+                                queries=title[:self.max_seq_len_passage],
+                                truncation="drop_rows_to_fit",
+                                padding="max_length",
+                                max_length=self.max_seq_len_passage,
+                                return_tensors="pt"
+                            )
 
                         # print('--------------Table Input-----------------')
                         # print(encoding["input_ids"])
@@ -2470,6 +2483,7 @@ def _read_dpr_json(
                             "title": passage["title"],
                             "text": passage["text"],
                             "label": "positive",
+                            "passage_id": passage["passage_id"],
                             "external_id": passage.get("passage_id", uuid.uuid4().hex.upper()[0:8]),
                         }
                     )
@@ -2482,6 +2496,7 @@ def _read_dpr_json(
                             "title": passage["title"],
                             "text": passage["text"],
                             "label": "hard_negative",
+                            "passage_id": passage["passage_id"],
                             "external_id": passage.get("passage_id", uuid.uuid4().hex.upper()[0:8]),
                         }
                     )
@@ -2610,9 +2625,9 @@ def convert_features_to_dataset(features):
 
             #     for i in range(len(sample_data)):
             #         print(len(sample_data[i]))
-            #         assert  len(sample_data[i]) == 8
+            #         # assert  len(sample_data[i]) == 8
                 
-
+            
             # Convert all remaining python objects to torch long tensors
             cur_tensor = torch.as_tensor(np.array(sample_data), dtype=torch.long)
 
